@@ -1,7 +1,7 @@
 import Helper from "./Helper";
 import axios from "axios";
 import * as path from "path";
-import * as jupyterGlobusMapConfig from "../configs/jupyter-globus-map.json";
+import { jupyterGlobusMap } from "../configs/config"; 
 
 declare type decodedToken = {
   host: string;
@@ -14,10 +14,11 @@ class JupyterHub {
   public async getUsername(token: string) {
     var t = this._decodeToken(token);
     const protocols = ["https", "http"];
+    var hosts = Object.keys(JSON.parse(JSON.stringify(jupyterGlobusMap)));
     var flag = false;
-    for (var host in Object.keys(jupyterGlobusMapConfig)) {
-      if (t.host == host) {
-        flag = true;
+    for (var j in hosts) {
+      if (t.host == hosts[j]) {
+	flag = true;
       }
     }
     if (!flag) {

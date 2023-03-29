@@ -1,4 +1,5 @@
 import SingularityConnector from "../connectors/SingularityConnector";
+import SlurmConnector from "../connectors/SlurmConnector";
 import BaseMaintainer from "./BaseMaintainer";
 import XSEDEUtil from "../lib/XSEDEUtil";
 import { ResultFolderContentManager } from "../lib/JobUtil";
@@ -9,7 +10,7 @@ import { Folder } from "../models/Folder";
 import { FolderUploaderHelper } from "../FolderUploader";
 
 class CommunityContributionMaintainer extends BaseMaintainer {
-  public connector: SingularityConnector;
+  public connector: SingularityConnector | SlurmConnector;
 
   public resultFolderContentManager: ResultFolderContentManager =
     new ResultFolderContentManager();
@@ -46,6 +47,10 @@ class CommunityContributionMaintainer extends BaseMaintainer {
       
       if (this.executableManifest.connector == "SingCVMFSConnector"){
         this.connector = this.getSingCVMFSConnector();
+      }
+
+      if (this.executableManifest.connector == "SlurmConnector"){
+      	this.connector = this.getSlurmConnector();
       }
 
       // upload executable folder
